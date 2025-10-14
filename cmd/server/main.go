@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 
 	"LOIL-auth-server/internal/config"
 	"LOIL-auth-server/internal/database"
@@ -26,6 +28,12 @@ func main() {
 		appLogger.Fatal("Database connection failed:", err)
 	}
 	defer db.Close()
+
+	// Запуск миграций
+	migrationFS := os.DirFS("migrations")
+	if err := db.RunMigrations(migrationFS); err != nil {
+		log.Fatal("Migrations failed:", err)
+	}
 
 	// Инициализация обработчиков
 	authHandler := handlers.NewAuthHandler(db, appLogger)
