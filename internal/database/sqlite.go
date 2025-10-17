@@ -7,7 +7,7 @@ import (
 
 	"LOIL-auth-server/internal/models"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 type SQLiteDB struct {
@@ -15,7 +15,7 @@ type SQLiteDB struct {
 }
 
 func NewSQLiteDB(dbPath string) (*SQLiteDB, error) {
-	db, err := sql.Open("sqlite3", dbPath)
+	db, err := sql.Open("sqlite", dbPath)
 	if err != nil {
 		return nil, err
 	}
